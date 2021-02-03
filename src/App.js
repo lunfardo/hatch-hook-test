@@ -85,7 +85,7 @@ const Example4 = () => {
 const randomWords = ["apple", "orange", "onion", "potato"];
 //Exercise: init hook with an expensive to get value
 const Example5 = () => {
-  //Error: this expensive task is evauluate is every re-render. It should use Lazy initialization like this () => runExpensiveTaskAndGetValue()
+  //Error: this expensive task is evaluate is every re-render. It should use Lazy initialization like this () => runExpensiveTaskAndGetValue()
   const [value] = useState(runExpensiveTaskAndGetValue());
   const [randomWord, setRandomWord] = useState("");
 
