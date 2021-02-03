@@ -115,7 +115,7 @@ function App() {
       <Example1 />
       <Example2 />
       {/*Excercise: create a hook that handles a hidden state that is only shown on click as an alert.*/}
-      {/*ERROR: component is re-render on every hook change, move this to another component or use useRef.*/}
+      {/*ERROR: the whole app is re-rendered on every hook change, move this to another component or use useRef.*/}
       <h3>Example 3</h3>
       <button onClick={() => setHiddenCounter(hiddenCounter + 1)}>
         increase hidden counter
