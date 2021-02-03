@@ -21,7 +21,7 @@ const Example1 = () => {
   const counterGreaterThanFive = useGreaterThanFive(count);
 
   useEffect(() => {
-    //ERROR: you should set the variable you are watching, use count => count+1 innstead
+    //ERROR: this will run on a loop, use count => count+1 and remove count from watch array innstead
     setCount(count + 1);
   }, [count]);
 
