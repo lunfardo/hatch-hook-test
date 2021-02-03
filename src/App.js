@@ -56,7 +56,7 @@ const Example2 = () => {
 const Example4 = () => {
   const [basket, setBasket] = useState([]);
 
-  //Error: no memorized function, will re-render every time
+  //Error: no memorized function, will be re-calculated on every render circle
   const addProductToBasket1 = (product) => {
     setBasket([...basket, product]);
   };
