@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import { runExpensiveTaskAndGetValue } from "./util";
 import logo from "./logo.svg";
 import "./App.css";
 
 const useGreaterThanFive = (number) => {
   const [isGreater, setIsGreater] = useState(false);
   //ERROR calling hook conditionally. Move logic inside useEffect
-  // if (typeof number === "undefined") return false;
+  if (typeof number === "undefined") return false;
   useEffect(() => {
     setIsGreater(number > 5);
   }, [number]);
@@ -13,13 +14,13 @@ const useGreaterThanFive = (number) => {
   return isGreater;
 };
 
+//Exercise: increase counter +1 on load
+//Exercise: create a hook that return true when the argument is greater than 5, false otherwise
 const Example1 = () => {
   const [count, setCount] = useState(0);
-  //Exercise: create a hook that return true when the argument is greater than 5, false otherwise
   const counterGreaterThanFive = useGreaterThanFive(count);
 
   useEffect(() => {
-    //Exercise: increase counter +1 on load
     //ERROR: you should set the variable you are watching, use count => count+1 innstead
     setCount(count + 1);
   }, [count]);
@@ -34,11 +35,11 @@ const Example1 = () => {
   );
 };
 
+//Exercise: set function handler using useEffect
 const Example2 = () => {
   const [showSupriseHandler, setShowSurpriseHandler] = useState();
   useEffect(() => {
-    //Exercise: set function handler using useEffect
-    //ERROR: react will try to evaluate this function showing the message on load, move handler to an object
+    //ERROR: react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), move handler to an object
     setShowSurpriseHandler(() => {
       alert("this is a surprise");
     });
@@ -51,6 +52,7 @@ const Example2 = () => {
   );
 };
 
+//Exercise: create a function handler that adds products to the basket
 const Example4 = () => {
   const [basket, setBasket] = useState([]);
 
@@ -59,10 +61,11 @@ const Example4 = () => {
     setBasket([...basket, product]);
   };
 
-  //Error: bascket no on watch list, basket will only hold last product added.
+  //Error: bascket not on watch list, basket will only hold last product added.
   const addProductToBasket2 = useCallback((product) => {
     setBasket([...basket, product]);
   }, []);
+
   return (
     <>
       <h3>Example 4</h3>
@@ -79,21 +82,47 @@ const Example4 = () => {
   );
 };
 
+const randomWords = ["apple", "orange", "onion", "potato"];
+//Exercise: init hook with an expensive to get value
+const Example5 = () => {
+  //Error: this expensive task is evauluate is every re-render. It should use Lazy initialization like this () => runExpensiveTaskAndGetValue()
+  const [value] = useState(runExpensiveTaskAndGetValue());
+  const [randomWord, setRandomWord] = useState("");
+
+  const randomWordGetterHandler = useCallback(() => {
+    const randomNumber = Math.floor(Math.random() * 4);
+    setRandomWord(randomWords[randomNumber]);
+  }, []);
+  return (
+    <>
+      <h3>Example 5</h3>
+      <button onClick={randomWordGetterHandler}>Get me a random word</button>
+      <br />
+      {randomWord && (
+        <div>
+          Your random word is:{randomWord},{value}
+        </div>
+      )}
+    </>
+  );
+};
+
 function App() {
-  //Excercise: create a hook that handles a hidden state that is only shown on click as an alert.
-  //ERROR: component is re-render on every hook change, move this to another component or use useRef.
   const [hiddenCounter, setHiddenCounter] = useState(0);
 
   return (
     <div className="App">
       <Example1 />
       <Example2 />
+      {/*Excercise: create a hook that handles a hidden state that is only shown on click as an alert.*/}
+      {/*ERROR: component is re-render on every hook change, move this to another component or use useRef.*/}
       <h3>Example 3</h3>
       <button onClick={() => setHiddenCounter(hiddenCounter + 1)}>
         increase hidden counter
       </button>
       <button onClick={() => alert(hiddenCounter)}>Show hidden counter</button>
       <Example4 />
+      <Example5 />
     </div>
   );
 }
