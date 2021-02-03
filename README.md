@@ -55,4 +55,28 @@ const Example5 = () => {
       <button onClick={() => alert(hiddenCounter)}>Show hidden counter</button>
     )
 }
+
+
+or using useRef
+
+```
+function App() {
+  let hiddenCounter = useRef(0);
+
+  return (
+    <div className="App">
+      <h3>Example 5</h3>
+      <button
+        onClick={() => {
+          hiddenCounter.current = hiddenCounter.current + 1;
+        }}
+      >
+        increase hidden counter
+      </button>
+      <button onClick={() => alert(hiddenCounter.current)}>
+        Show hidden counter
+      </button>
+    </div>
+  );
+}
 ```
