@@ -39,7 +39,7 @@ const Example1 = () => {
 const Example2 = () => {
   const [showSupriseHandler, setShowSurpriseHandler] = useState();
   useEffect(() => {
-    //ERROR: react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), move handler to an object
+    //Error: react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), move handler to an object
     setShowSurpriseHandler(() => {
       alert("this is a surprise");
     });
