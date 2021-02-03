@@ -5,8 +5,9 @@ import "./App.css";
 
 const useGreaterThanFive = (number) => {
   const [isGreater, setIsGreater] = useState(false);
-  //ERROR calling hook conditionally. Move logic inside useEffect
+
   if (typeof number === "undefined") return false;
+
   useEffect(() => {
     setIsGreater(number > 5);
   }, [number]);
@@ -21,7 +22,6 @@ const Example1 = () => {
   const counterGreaterThanFive = useGreaterThanFive(count);
 
   useEffect(() => {
-    //Error: this will run on a loop, use count => count+1 and remove count from watch array innstead
     setCount(count + 1);
   }, [count]);
 
@@ -39,7 +39,6 @@ const Example1 = () => {
 const Example2 = () => {
   const [showSupriseHandler, setShowSurpriseHandler] = useState();
   useEffect(() => {
-    //Error: react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), move handler to an object
     setShowSurpriseHandler(() => {
       alert("this is a surprise");
     });
@@ -52,23 +51,21 @@ const Example2 = () => {
   );
 };
 
-//Exercise: create a function handler that adds products to the basket
-const Example4 = () => {
+//Exercise: create a function handler that adds products to the basket using either addProductToBasket1 or addProductToBasket2
+const Example3 = () => {
   const [basket, setBasket] = useState([]);
 
-  //Error: no memorized function, will be re-calculated on every render circle
   const addProductToBasket1 = (product) => {
     setBasket([...basket, product]);
   };
 
-  //Error: bascket not on watch list, basket will only hold last product added.
   const addProductToBasket2 = useCallback((product) => {
     setBasket([...basket, product]);
   }, []);
 
   return (
     <>
-      <h3>Example 4</h3>
+      <h3>Example 3</h3>
       <button onClick={() => addProductToBasket1("apple")}>Add Apple</button>
       <button onClick={() => addProductToBasket1("orange")}>Add Orange</button>
       <button onClick={() => addProductToBasket1("onion")}>Add Onion</button>
@@ -84,8 +81,7 @@ const Example4 = () => {
 
 const randomWords = ["apple", "orange", "onion", "potato"];
 //Exercise: init hook with an expensive to get value
-const Example5 = () => {
-  //Error: this expensive task is evaluate is every re-render. It should use Lazy initialization like this () => runExpensiveTaskAndGetValue()
+const Example4 = () => {
   const [value] = useState(runExpensiveTaskAndGetValue());
   const [randomWord, setRandomWord] = useState("");
 
@@ -95,7 +91,7 @@ const Example5 = () => {
   }, []);
   return (
     <>
-      <h3>Example 5</h3>
+      <h3>Example 4</h3>
       <button onClick={randomWordGetterHandler}>Get me a random word</button>
       <br />
       {randomWord && (
@@ -114,15 +110,14 @@ function App() {
     <div className="App">
       <Example1 />
       <Example2 />
+      <Example3 />
+      <Example4 />
       {/*Excercise: create a hook that handles a hidden state that is only shown on click as an alert.*/}
-      {/*ERROR: the whole app is re-rendered on every hook change, move this to another component or use useRef.*/}
-      <h3>Example 3</h3>
+      <h3>Example 5</h3>
       <button onClick={() => setHiddenCounter(hiddenCounter + 1)}>
         increase hidden counter
       </button>
       <button onClick={() => alert(hiddenCounter)}>Show hidden counter</button>
-      <Example4 />
-      <Example5 />
     </div>
   );
 }
