@@ -22,6 +22,8 @@ const Example2 = () => {
     });
   });
 
+  //or just use useCallback
+
   return (
     <>
       <h3>Example 2</h3>
