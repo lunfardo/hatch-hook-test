@@ -55,7 +55,7 @@ const Example5 = () => {
       <button onClick={() => alert(hiddenCounter)}>Show hidden counter</button>
     )
 }
-
+```
 
 or using useRef
 
