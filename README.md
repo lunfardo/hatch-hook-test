@@ -7,13 +7,24 @@ Solution Example 1, part 2:
 Error on line 9 calling hook conditionally. Move logic inside useEffect
 
 Solution Example 2:
-Error on line 42 react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), move handler to an object or use useCallback.
+Error on line 42 react will try to evaluate this function showing the message on load (react will think it is dispatching a new value), wrap it in with another function or move handler to an object or use useCallback.
 
 ```
 const Example2 = () => {
   const [showSupriseHandler, setShowSurpriseHandler] = useState({
     handler: "",
   });
+
+    useEffect(() => {
+    setShowSurpriseHandler(
+      () => () => {
+        alert("this is a surprise");
+      },
+    );
+  });
+
+  //or
+
   useEffect(() => {
     setShowSurpriseHandler({
       handler: () => {
@@ -22,7 +33,7 @@ const Example2 = () => {
     });
   });
 
-  //or just use useCallback
+  //or useCallback
 
   return (
     <>
